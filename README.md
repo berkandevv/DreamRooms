@@ -50,6 +50,14 @@ Con Docker iniciado, ejecuta:
 ./start-demo.sh
 ```
 
+Si el sistema muestra un error de permisos al ejecutar el script, concede
+permiso de ejecución una vez y vuelve a lanzarlo:
+
+```bash
+chmod +x start-demo.sh
+./start-demo.sh
+```
+
 El script prepara automáticamente el entorno local:
 
 1. Crea `backend/.env` si todavía no existe.
