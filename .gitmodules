@@ -1,0 +1,6 @@
+[submodule "backend"]
+	path = backend
+	url = git@github.com:berkandevv/DreamRooms-api.git
+[submodule "frontend"]
+	path = frontend
+	url = git@github.com:berkandevv/dreamrooms-front.git
