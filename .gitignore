@@ -1,0 +1,19 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Editor settings
+.fleet/
+.idea/
+.vscode/
+.zed/
+
+# Logs and temporary files
+*.log
+*.sw?
+*~
