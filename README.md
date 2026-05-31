@@ -126,7 +126,7 @@ Este repositorio fija una versión concreta de cada proyecto:
 Para descargar las versiones registradas por este repositorio:
 
 ```bash
-git pull
+git pull --recurse-submodules
 git submodule update --init --recursive
 ```
 
