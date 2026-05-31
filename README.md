@@ -121,7 +121,7 @@ Este repositorio fija una versión concreta de cada proyecto:
 | Proyecto | Directorio | Repositorio |
 | --- | --- | --- |
 | Backend | `backend/` | [DreamRooms-api](https://github.com/berkandevv/DreamRooms-api) |
-| Frontend | `frontend/` | [dreamrooms-front](https://github.com/berkandevv/dreamrooms-front) |
+| Frontend | `frontend/` | [DreamRooms-front](https://github.com/berkandevv/DreamRooms-front) |
 
 Para descargar las versiones registradas por este repositorio:
 
