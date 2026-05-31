@@ -62,11 +62,12 @@ El script prepara automáticamente el entorno local:
 
 1. Crea `backend/.env` si todavía no existe.
 2. Configura la conexión del backend con MySQL dentro de Docker.
-3. Construye la imagen PHP y levanta MySQL, PHP-FPM y Nginx.
-4. Instala las dependencias Composer.
-5. Genera `APP_KEY` si es necesario.
-6. Recrea la base de datos y carga los datos demo.
-7. Levanta los servidores Vite del frontend React y del panel Laravel.
+3. Detiene los contenedores anteriores del proyecto sin borrar los volúmenes.
+4. Construye la imagen PHP y levanta MySQL, PHP-FPM y Nginx.
+5. Instala las dependencias Composer.
+6. Genera `APP_KEY` si es necesario.
+7. Recrea la base de datos y carga los datos demo.
+8. Levanta los servidores Vite del frontend React y del panel Laravel.
 
 > [!WARNING]
 > El script ejecuta `php artisan migrate:fresh --seed --force`. Cada ejecución
@@ -99,9 +100,9 @@ administrador accede al panel web Laravel desde
 
 | Servicio | Descripción |
 | --- | --- |
-| `db` | Base de datos MySQL |
-| `app` | Backend Laravel servido con PHP-FPM |
-| `web` | Servidor Nginx expuesto en el puerto `8000` |
+| `database` | Base de datos MySQL de DreamRooms |
+| `backend` | Backend Laravel servido con PHP-FPM |
+| `nginx` | Servidor Nginx expuesto en el puerto `8000` |
 | `frontend` | Servidor Vite del frontend React en el puerto `5173` |
 | `backend-vite` | Servidor Vite de los assets Laravel en el puerto `5174` |
 

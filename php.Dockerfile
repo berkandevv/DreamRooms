@@ -9,19 +9,17 @@ RUN apt-get update && apt-get install -y \
 
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-# Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-RUN groupadd -g ${GROUP_ID} dev \
-    && useradd -m -u ${USER_ID} -g ${GROUP_ID} -s /bin/bash dev \
-    && usermod -aG www-data dev
+RUN groupadd -g ${GROUP_ID} dreamrooms \
+    && useradd -m -u ${USER_ID} -g ${GROUP_ID} -s /bin/bash dreamrooms \
+    && usermod -aG www-data dreamrooms
 
-# (Opcional pero recomendable) evita líos de permisos al escribir caches/logs
 RUN mkdir -p /var/www/storage /var/www/bootstrap/cache \
     && chown -R ${USER_ID}:${GROUP_ID} /var/www
 
-USER dev
+USER dreamrooms
 
 CMD ["php-fpm"]

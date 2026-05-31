@@ -34,28 +34,32 @@ set_env() {
 }
 
 set_env APP_URL http://localhost:8000
+set_env APP_NAME DreamRooms
 set_env DB_CONNECTION mysql
-set_env DB_HOST db
+set_env DB_HOST database
 set_env DB_PORT 3306
-set_env DB_DATABASE app
-set_env DB_USERNAME app
-set_env DB_PASSWORD app
+set_env DB_DATABASE dreamrooms
+set_env DB_USERNAME dreamrooms
+set_env DB_PASSWORD dreamrooms
+
+echo "Deteniendo contenedores anteriores..."
+docker compose down --remove-orphans
 
 echo "Construyendo PHP y levantando MySQL..."
-docker compose up -d --build db app web
+docker compose up -d --build database backend nginx
 
 echo "Instalando dependencias PHP..."
-docker compose exec -T app composer install --no-interaction
+docker compose exec -T backend composer install --no-interaction
 
 if ! grep -q '^APP_KEY=base64:' "$ENV_FILE"; then
     echo "Generando APP_KEY..."
-    docker compose exec -T app php artisan key:generate --force
+    docker compose exec -T backend php artisan key:generate --force
 fi
 
 echo "Preparando almacenamiento y reconstruyendo la base de datos demo..."
-docker compose exec -T app php artisan config:clear
-docker compose exec -T app php artisan storage:link --force
-docker compose exec -T app php artisan migrate:fresh --seed --force
+docker compose exec -T backend php artisan config:clear
+docker compose exec -T backend php artisan storage:link --force
+docker compose exec -T backend php artisan migrate:fresh --seed --force
 
 echo "Levantando los servidores Vite..."
 docker compose up -d frontend backend-vite
