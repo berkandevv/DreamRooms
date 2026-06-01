@@ -3,11 +3,11 @@ FROM php:8.3-fpm
 ARG USER_ID=1000
 ARG GROUP_ID=1000
 
-RUN apt-get update && apt-get install -y \
-    git curl libpng-dev libonig-dev libxml2-dev zip unzip \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git curl libonig-dev libxml2-dev zip unzip \
     && rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 

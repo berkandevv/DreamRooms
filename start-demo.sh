@@ -48,8 +48,10 @@ docker compose down --remove-orphans
 echo "Construyendo PHP y levantando MySQL..."
 docker compose up -d --build database backend nginx
 
-echo "Instalando dependencias PHP..."
-docker compose exec -T backend composer install --no-interaction
+if [ ! -f "$ROOT_DIR/backend/vendor/autoload.php" ]; then
+    echo "Instalando dependencias PHP..."
+    docker compose exec -T backend composer install --no-interaction
+fi
 
 if ! grep -q '^APP_KEY=base64:' "$ENV_FILE"; then
     echo "Generando APP_KEY..."

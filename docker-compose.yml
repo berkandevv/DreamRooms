@@ -9,6 +9,7 @@ services:
         USER_ID: ${UID:-1000}
         GROUP_ID: ${GID:-1000}
     container_name: dreamrooms-backend
+    restart: unless-stopped
     working_dir: /var/www
     volumes:
       - ./backend:/var/www
