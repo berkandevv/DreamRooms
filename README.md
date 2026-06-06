@@ -142,7 +142,7 @@ git commit -m "chore(git): update project submodules"
 ## Documentación específica
 
 - [Backend y API](https://github.com/berkandevv/DreamRooms-api#readme)
-- [Frontend React](https://github.com/berkandevv/dreamrooms-front#readme)
+- [Frontend React](https://github.com/berkandevv/DreamRooms-front#readme)
 
 ## Licencia
 
