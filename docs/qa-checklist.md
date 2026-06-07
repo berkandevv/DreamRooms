@@ -124,6 +124,26 @@ Notación: `[✓]` indica que la comprobación resultó correcta.
 
 ---
 
+## Navegacion en navegador (SPA y paneles)
+
+Recorrido manual de la interfaz sobre el entorno Docker, además de las comprobaciones por API.
+
+- [✓] SPA pública: la home carga el buscador y los hoteles destacados, el listado `/hotels` muestra 25 hoteles paginados con filtros y orden, y el detalle por slug carga imagen, reseñas, horarios, servicios y precio.
+- [✓] Cliente: el login de `cliente01@dreamrooms.test` muestra "Mis reservas" y "Favoritos" en la cabecera. "Mis reservas" lista las estancias pasadas con sus reseñas.
+- [✓] Propietario: el login de `owner01@dreamrooms.test` da acceso a "Mi panel", con Dashboard (KPIs y hoteles gestionados), Inventario, Reservas (filtros, estados y pago) y cambio de sección correcto.
+- [✓] Panel admin web: la raíz redirige al login, `admin@dreamrooms.com` accede a `/admin/users`, y se navega por Users, Hotels, Room Types, Availability, Bookings, Reviews y Services. El propio administrador no es editable desde Users.
+
+## Responsive y navegacion en dispositivos
+
+Comprobado en móvil (375 px), tablet (768 y 820 px) y escritorio (1280 px), con sesión de cliente, de propietario y sin sesión.
+
+- [✓] Cabecera en escritorio (>=1024 px): muestra los enlaces (Inicio, Hoteles, Nosotros, Ayuda) y los botones de acción del rol sin solaparse.
+- [✓] Cabecera en tablet y móvil (<1024 px): aparece un botón de menú que despliega los enlaces y las acciones (Mi panel / Favoritos / Mis reservas / Mi cuenta / Salir, o Iniciar sesión / Registrarse). Al elegir una opción el menú se cierra y navega.
+- [✓] Panel de propietario en escritorio (>=1024 px): mantiene la barra lateral con las cinco secciones.
+- [✓] Panel de propietario en tablet y móvil (<1024 px): muestra una barra superior con la marca, "Volver a la web" y la navegación horizontal (Dashboard, Inventario, Reservas, Nuevo hotel, Ajustes), con scroll si no cabe. El cambio de sección funciona.
+
+---
+
 ## Notas y hallazgos (no son bugs)
 
 1. En el registro, el parámetro es `account_type` (`customer`/`owner`), no `role`. El envío de `role` se ignora (resulta customer). `account_type=admin` devuelve 422.
@@ -131,3 +151,4 @@ Notación: `[✓]` indica que la comprobación resultó correcta.
 3. El seed incluye datos para probar el plazo de cancelación y la estancia mínima sin configuración previa: las habitaciones de `hostal-la-muralla` traen `free_cancellation_hours=48` y la disponibilidad fija `min_stay_nights=2` en fin de semana. El resto de habitaciones mantiene `free_cancellation_hours=NULL`, en cuyo caso toda cancelación se considera dentro de plazo (con reembolso).
 4. No existe expiración automática de reservas pendientes. La tabla `bookings` no tiene columna `expires_at` ni hay comando programado ni scheduler que las cancele. Una reserva con pago en hotel permanece en `pending` hasta que el propietario o el administrador la confirme, complete o cancele, o el cliente la cancele. En la creación solo se fija `cancellation_deadline_at`, derivado del `free_cancellation_hours` del tipo de habitación.
 5. Las comprobaciones que crean datos (hoteles, reservas, servicios, reseñas) se revierten volviendo a ejecutar `./start-demo.sh`, que recarga el seed con `migrate:fresh --seed`.
+6. Durante las pruebas en dispositivos se corrigió la navegación responsive: la cabecera ocultaba los enlaces por debajo de 1024 px sin alternativa y los botones se solapaban en tablet, y el panel de propietario perdía la barra lateral sin sustituto. Se añadió un menú desplegable en la cabecera y una barra superior de navegación en el panel para anchuras menores de 1024 px (`Navbar.jsx` y `OwnerShell.jsx`).
