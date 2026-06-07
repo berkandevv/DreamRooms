@@ -4,6 +4,14 @@ DreamRooms es una aplicación web de reservas de hoteles. Este repositorio reún
 el entorno Docker de desarrollo y referencia los proyectos de backend y
 frontend como submódulos Git.
 
+## Repositorios
+
+| Repositorio | Descripción |
+| --- | --- |
+| [DreamRooms](https://github.com/berkandevv/DreamRooms) | Entorno Docker y orquestación del proyecto (este repositorio) |
+| [DreamRooms-api](https://github.com/berkandevv/DreamRooms-api) | Backend Laravel y API REST |
+| [DreamRooms-front](https://github.com/berkandevv/DreamRooms-front) | Frontend React |
+
 ## Funcionalidades principales
 
 - Catálogo de hoteles con filtros, habitaciones, servicios y reseñas
@@ -141,6 +149,7 @@ git commit -m "chore(git): update project submodules"
 
 ## Documentación específica
 
+- [Checklist funcional de QA](docs/qa-checklist.md)
 - [Backend y API](https://github.com/berkandevv/DreamRooms-api#readme)
 - [Frontend React](https://github.com/berkandevv/DreamRooms-front#readme)
 
