@@ -28,7 +28,7 @@ Notación: `[✓]` indica que la comprobación resultó correcta.
 
 ### Reservas
 - [✓] Reservar con tarjeta simulada genera una reserva en estado `confirmed` + `paid`. Con `payment_method=card` el estado queda en confirmed, el payment_status en paid y se genera el pago simulado.
-- [✓] Reservar con pago en el hotel genera una reserva en estado `pending` y no descuenta cupo (overbooking). Con `payment_method=hotel` el estado es pending, el payment_status pending y el `expires_at` se fija en +30 min. Tras una reserva con pago en hotel la disponibilidad de la noche no se decrementa, y se admiten reservas con pago en hotel aunque el cupo esté a 0.
+- [✓] Reservar con pago en el hotel genera una reserva en estado `pending` y no descuenta cupo (overbooking). Con `payment_method=hotel` el estado es pending y el payment_status pending. Tras una reserva con pago en hotel la disponibilidad de la noche no se decrementa, y se admiten reservas con pago en hotel aunque el cupo esté a 0. La reserva fija `cancellation_deadline_at`. No existe expiración automática de pendientes en el código actual (ver nota 4).
 - [✓] El control de disponibilidad por unidades solo se aplica al pago con tarjeta. El pago en hotel admite overbooking. La estancia mínima, la fecha cerrada y la ocupación siguen bloqueando ambos métodos.
   - Si el número de adultos supera capacidad·unidades, devuelve 422 en ambos métodos.
   - Con tarjeta, el cupo insuficiente (`available_units`) y la fecha cerrada devuelven 422.
@@ -129,5 +129,5 @@ Notación: `[✓]` indica que la comprobación resultó correcta.
 1. En el registro, el parámetro es `account_type` (`customer`/`owner`), no `role`. El envío de `role` se ignora (resulta customer). `account_type=admin` devuelve 422.
 2. Los filtros de catálogo por API se limitan a `city/country/stars/price/pets/smoking`. "Comunidad" y "servicios" se filtran en cliente, dentro de la SPA.
 3. El seed incluye datos para probar el plazo de cancelación y la estancia mínima sin configuración previa: las habitaciones de `hostal-la-muralla` traen `free_cancellation_hours=48` y la disponibilidad fija `min_stay_nights=2` en fin de semana. El resto de habitaciones mantiene `free_cancellation_hours=NULL`, en cuyo caso toda cancelación se considera dentro de plazo (con reembolso).
-4. Las reservas `pending` del seed se autocancelaron mediante `expirePendingBookings`, dado que su `expires_at` ya había transcurrido, lo que confirma que la expiración a 30 min funciona.
+4. No existe expiración automática de reservas pendientes. La tabla `bookings` no tiene columna `expires_at` ni hay comando programado ni scheduler que las cancele. Una reserva con pago en hotel permanece en `pending` hasta que el propietario o el administrador la confirme, complete o cancele, o el cliente la cancele. En la creación solo se fija `cancellation_deadline_at`, derivado del `free_cancellation_hours` del tipo de habitación.
 5. Las comprobaciones que crean datos (hoteles, reservas, servicios, reseñas) se revierten volviendo a ejecutar `./start-demo.sh`, que recarga el seed con `migrate:fresh --seed`.
